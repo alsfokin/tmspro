@@ -1,0 +1,211 @@
+<mvc:View
+	controllerName="sap.m.nemo.proga.partner.controller.App"
+	xmlns:l="sap.ui.layout"
+	xmlns:core="sap.ui.core"
+	xmlns:mvc="sap.ui.core.mvc"
+	xmlns:c="sap.ui.core.Control"
+	xmlns:u="sap.ui.unified"
+	xmlns:t="sap.ui.table"
+	xmlns="sap.m"
+	xmlns:tnt="sap.tnt"
+	class="viewPadding"
+	height="100%">
+
+
+	<NavContainer
+		id="navCon"
+		width="100%"
+		height="98%"
+		class="navContainerControl sapUiSmallMarginBottom">
+		<Page id="loginPage" title="Partner">
+			<core:Fragment fragmentName="sap.ui.nemo.proga.partner.view.Auth" type="XML" />
+		</Page>
+		<tnt:ToolPage id="toolPage">
+			<tnt:header>
+				<tnt:ToolHeader>
+					<Button
+						id="sideNavigationToggleButton"
+						icon="sap-icon://menu2"
+						type="Transparent"
+						press="onSideNavButtonPress">
+							<layoutData>
+									<OverflowToolbarLayoutData priority="NeverOverflow" />
+							</layoutData>
+					</Button>
+					<ToolbarSpacer />
+					<core:Icon src="sap-icon://activate">
+					</core:Icon>
+					<Text text="Partner" wrapping="false">
+							<layoutData>
+									<OverflowToolbarLayoutData priority="Disappear" />
+							</layoutData>
+					</Text>
+					<ToolbarSpacer />
+					<Button text="Выход" type="Transparent" press="handleLogoutPress">
+							<layoutData>
+									<OverflowToolbarLayoutData priority="NeverOverflow" />
+							</layoutData>
+					</Button>
+				</tnt:ToolHeader>
+			</tnt:header>
+			<tnt:sideContent>
+				<tnt:SideNavigation expanded="true"
+									itemSelect="onItemSelect">
+					<tnt:NavigationList items="{path: 'Settings>/navigation'}">
+						<tnt:NavigationListItem text="{Settings>title}"
+												icon="{Settings>icon}"
+												enabled="{Settings>enabled}"
+												expanded="{Settings>expanded}"
+												items="{Settings>items}"
+												key="{Settings>key}">
+							<tnt:NavigationListItem text="{Settings>title}"
+													key="{Settings>key}"
+													enabled="{Settings>enabled}">
+							</tnt:NavigationListItem>
+						</tnt:NavigationListItem>
+					</tnt:NavigationList>
+				</tnt:SideNavigation>
+			</tnt:sideContent>
+			<tnt:mainContents>
+				<NavContainer id="pageContainer">
+					<pages>
+						<ScrollContainer id="orders"
+										horizontal="false"
+										vertical="false"
+										height="100%">
+							<IconTabBar
+								id="idIconTabBar"
+								select="handleIconTabBarSelect"
+								class="sapUiResponsiveContentPadding">
+								<items>
+									<IconTabFilter
+										icon="sap-icon://clear-filter"
+										iconColor="Neutral"
+										design="Horizontal"
+										count=""
+										text="Все заказы"
+										key="All" />
+									<IconTabSeparator />
+									<IconTabFilter
+										icon="sap-icon://create"
+										iconColor="Negative"
+										design="Horizontal"
+										count=""
+										text="Неподтверждённые"
+										key="New" />
+									<IconTabSeparator icon="sap-icon://open-command-field" />
+									<IconTabFilter
+										icon="sap-icon://sales-order"
+										iconColor="Critical"
+										design="Horizontal"
+										count=""
+										text="Неоплаченные"
+										key="Unpayed" />
+									<IconTabSeparator icon="sap-icon://open-command-field" />
+									<IconTabFilter
+										icon="sap-icon://payment-approval"
+										iconColor="Positive"
+										design="Horizontal"
+										count=""
+										text="Сданные"
+										key="Payed" />
+									<IconTabSeparator />
+									<IconTabFilter
+										icon="sap-icon://cancel"
+										iconColor="Negative"
+										design="Horizontal"
+										count=""
+										text="Отменённые"
+										key="Canceled" />
+								</items>
+							</IconTabBar>
+							<t:Table
+								id="table"
+								editable="false"
+								visibleRowCount="20"
+								selectionMode="None"
+								rows="{/orders}"
+								>
+
+								<t:columns>
+									<t:Column
+										sortProperty="n">
+										<Label text="№" />
+										<t:template>
+											<Text text="{n}" wrapping="false"/>
+										</t:template>
+									</t:Column>
+									<t:Column
+										sortProperty="name">
+										<Label text="Заказ" />
+										<t:template>
+											<Text text="{name}" wrapping="false"/>
+										</t:template>
+									</t:Column>
+									<t:Column
+										sortProperty="clientN">
+										<Label text="Клиент №" />
+										<t:template>
+											<Text text="{clientN}" wrapping="false"/>
+										</t:template>
+									</t:Column>
+									<t:Column
+										sortProperty="clientName">
+										<Label text="Клиент" />
+										<t:template>
+											<Text text="{clientName}" wrapping="false"/>
+										</t:template>
+									</t:Column>
+									<t:Column sortProperty="creationDate" hAlign="Right">
+										<Label text="Дата создания" />
+										<t:template>
+											<Text text="{
+												path: 'creationDate',
+												formatter: '.formatDate'}"/>
+										</t:template>
+									</t:Column>
+									<t:Column sortProperty="salesDate" hAlign="Right">
+										<Label text="Дата продажи" />
+										<t:template>
+											<Text text="{
+												path: 'salesDate',
+												formatter: '.formatDate'}"/>
+										</t:template>
+									</t:Column>
+									<t:Column sortProperty="completedDate" hAlign="Right">
+										<Label text="Дата сдачи" />
+										<t:template>
+											<Text text="{
+												path: 'completedDate',
+												formatter: '.formatDate'}"/>
+										</t:template>
+									</t:Column>
+									<t:Column sortProperty="amount">
+										<Label text="Сумма" />
+										<t:template>
+											<u:Currency
+												value="{amount}"
+												currency="{currencyName}"
+												maxPrecision="0"
+												useSymbol="true" />
+										</t:template>
+									</t:Column>
+								</t:columns>
+							</t:Table>
+							<Bar>
+								<contentRight>
+									<Button text="Обновить" press="handleUpdatePress" icon="sap-icon://synchronize">
+										<layoutData>
+												<OverflowToolbarLayoutData priority="NeverOverflow" />
+										</layoutData>
+									</Button>
+								</contentRight>
+							</Bar>
+						</ScrollContainer>
+					</pages>
+				</NavContainer>
+			</tnt:mainContents>
+		</tnt:ToolPage>
+	</NavContainer>
+
+</mvc:View>

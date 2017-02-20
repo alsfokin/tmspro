@@ -1,0 +1,24 @@
+<core:FragmentDefinition
+	xmlns="sap.m"
+	xmlns:f="sap.ui.layout.form"
+	xmlns:core="sap.ui.core">
+	<VBox class="sapUiContentPadding" alignItems="Center">
+		<f:SimpleForm id="AuthForm"
+			editable="true"
+			layout="ResponsiveGridLayout"
+			title="Авторизация"
+			class="editableForm">
+			<f:content>
+				<Label text="Логин" />
+				<Input id="username" valueLiveUpdate="true" value="{Auth>/username}"/>
+				<Label text="Пароль" />
+				<Input id="password" type="Password" valueLiveUpdate="true" value="{Auth>/password}"/>
+        		<Button text="Войти" press="handleLoginPress">
+          			<layoutData>
+              			<OverflowToolbarLayoutData priority="NeverOverflow" />
+          			</layoutData>
+        		</Button>
+			</f:content>
+		</f:SimpleForm>
+	</VBox>
+</core:FragmentDefinition>
